@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Will You Be My Valentine? 💖</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background-color: #ffe6f0;
+      text-align: center;
+      overflow: hidden;
+      padding-top: 50px;
+    }
+
+    h1 {
+      color: #ff3399;
+      font-size: 3em;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px #ff99cc;
+    }
+
+    #heart {
+      font-size: 5em;
+      color: red;
+      animation: beat 1s infinite;
+      margin-bottom: 30px;
+    }
+
+    @keyframes beat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+    }
+
+    button {
+      background-color: #ff3399;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      font-size: 1.5em;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.2s;
+      margin-bottom: 30px;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+    }
+
+    #response {
+      font-size: 2em;
+      color: #ff0066;
+      margin-top: 20px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .confetti, .sparkle-heart {
+      position: absolute;
+      border-radius: 50%;
+    }
+
+    .confetti {
+      width: 10px;
+      height: 10px;
+      top: -10px;
+      animation: fall 3s linear forwards;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+    }
+
+    .sparkle-heart {
+      font-size: 2em;
+      animation: floatHeart 3s linear forwards;
+    }
+
+    @keyframes floatHeart {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-300px) scale(2); opacity: 0; }
+    }
+
+    #yesMessage {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      font-size: 5em;
+      color: #ff0066;
+      text-shadow: 2px 2px #ff99cc, 0 0 10px #ff66cc;
+      z-index: 20;
+      transition: transform 0.8s ease-out;
+    }
+  </style>
+</head>
+<body>
+  <h1>Will You Be My Valentine? 💖</h1>
+  <div id="heart">❤️</div>
+  <button onclick="askProposal()">Click Me!</button>
+  <div id="response"></div>
+
+  <!-- Yes message -->
+  <div id="yesMessage">YES! 💕</div>
+
+  <!-- Background Music -->
+  <audio id="bgMusic" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_1c2b37e4c0.mp3?filename=romantic-ukulele-10721.mp3" type="audio/mpeg">
+  </audio>
+  <button onclick="toggleMusic()" style="margin-top:20px;">🔊 Play/Pause Music</button>
+
+  <script>
+    const bgMusic = document.getElementById('bgMusic');
+
+    function toggleMusic() {
+      if (bgMusic.paused) {
+        bgMusic.play();
+      } else {
+        bgMusic.pause();
+      }
+    }
+
+    function askProposal() {
+      const answer = confirm("💌 Will you be my Valentine? Click 'OK' for Yes, 'Cancel' for No!");
+      const responseDiv = document.getElementById("response");
+
+      if(answer) {
+        responseDiv.innerHTML = "Yay! I’m so happy! 💕<br>Let's celebrate together! 🎉";
+        startConfetti();
+        showYesMessage();
+      } else {
+        responseDiv.innerHTML = "Aww, that's okay 😢. You're still amazing! 💖";
+      }
+    }
+
+    function startConfetti() {
+      for(let i=0; i<100; i++) {
+        let confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = Math.random() * window.innerWidth + 'px';
+        confetti.style.backgroundColor = randomColor();
+        confetti.style.animationDuration = (2 + Math.random()*3) + 's';
+        document.body.appendChild(confetti);
+        setTimeout(() => confetti.remove(), 3000);
+      }
+    }
+
+    function showYesMessage() {
+      const yesMsg = document.getElementById('yesMessage');
+      yesMsg.style.transform = "translate(-50%, -50%) scale(1)";
+      // Floating hearts around the message
+      for(let i=0; i<20; i++){
+        let heart = document.createElement('div');
+        heart.className = 'sparkle-heart';
+        heart.innerText = '💖';
+        heart.style.left = (window.innerWidth/2 + (Math.random()*200-100)) + 'px';
+        heart.style.top = (window.innerHeight/2 + (Math.random()*200-100)) + 'px';
+        heart.style.fontSize = (20 + Math.random()*30) + 'px';
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 3000);
+      }
+    }
+
+    function randomColor() {
+      const colors = ['#ff6699', '#ff3366', '#ffccff', '#ff99cc', '#ff66cc'];
+      return colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    // Falling hearts in background
+    function createHeart() {
+      let heart = document.createElement('div');
+      heart.innerText = '💖';
+      heart.style.position = 'absolute';
+      heart.style.fontSize = Math.random() * 30 + 20 + 'px';
+      heart.style.left = Math.random() * window.innerWidth + 'px';
+      heart.style.top = '-50px';
+      heart.style.animation = `fall ${4 + Math.random()*3}s linear forwards`;
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 7000);
+    }
+    setInterval(createHeart, 300);
+  </script>
+</body>
+</html>
